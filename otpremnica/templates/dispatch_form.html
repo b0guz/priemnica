@@ -1,0 +1,102 @@
+{% load static %}
+{% load widget_tweaks %}
+{% with WIDGET_ERROR_CLASS='is-invalid' %}
+<form hx-post="{{ request.path }}" hx-headers='{"X-CSRFToken":"{{ csrf_token }}"}' class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Dispatch Note</h5>
+        <button type="button" class="btn-close close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="{{ form.dispatch_note.doc_number.id_for_label }}">Number</label>
+            {% render_field form.dispatch_note.doc_number class="form-control" placeholder="***/2/year" %}
+            <div class="invalid-feedback">{{ form.dispatch_note.doc_number.errors|first }}</div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.dispatch_note.doc_date.id_for_label }}">Date</label>
+            {% render_field form.dispatch_note.doc_date class="form-control" %}
+            <div class="invalid-feedback">{{ form.dispatch_note.doc_date.errors|first }}</div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.supplier.id_supplier.id_for_label }}">JBMG</label>
+            {% url 'search_supplier' as htmx_url %}
+            {% render_field form.supplier.id_supplier class="form-control" hx-get=htmx_url hx-trigger="keyup changed delay:1s, search" hx-target="#suppliers-list" list="suppliers-list" onchange="SelectData()" %}
+            <datalist id="suppliers-list">
+                {% include "search_results.html" %}
+            </datalist>
+            <div class="invalid-feedback">{{ form.supplier.id_supplier.errors|first }}</div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.supplier.name.id_for_label }}">Name</label>
+            {% render_field form.supplier.name class="form-control" %}
+            <div class="invalid-feedback">{{ form.supplier.name.errors|first }}</div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.supplier.address.id_for_label }}">Address</label>
+            {% render_field form.supplier.address class="form-control" %}
+            <div class="invalid-feedback">{{ form.supplier.address.errors|first }}</div>
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.dispatch_note.meat_type.id_for_label }}">Meat Type</label>
+            {% render_field form.dispatch_note.meat_type class="form-control form-select" onchange="HideDocs()" %}
+            <div class="invalid-feedback">{{ form.dispatch_note.meat_type.errors|first }}</div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.dispatch_note.quantity.id_for_label }}">Quantity</label>
+            {% render_field form.dispatch_note.quantity class="form-control" onchange="CalcMass()" %}
+            <div class="invalid-feedback">{{ form.dispatch_note.quantity.errors|first }}</div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.dispatch_note.total_mass.id_for_label }}">Total mass</label>
+            {% render_field form.dispatch_note.total_mass class="form-control" onchange="CalcMass()" placeholder="kilo" %}
+            <div class="invalid-feedback">{{ form.dispatch_note.total_mass.errors|first }}</div>
+        </div>
+        <div class="form-group">
+            <label for="{{ form.dispatch_note.mass.id_for_label }}">Mass</label>
+            {% render_field form.dispatch_note.mass class="form-control" placeholder="kilo" %}
+            <div class="invalid-feedback">{{ form.dispatch_note.mass.errors|first }}</div>
+        </div>
+
+        <div id="cow-docs" {% if form.dispatch_note.meat_type.value != 1 %} class="d-none" {% endif%} >
+            <div class="form-group">
+                <label for="{{ form.dispatch_note.passports.id_for_label }}">Passports</label>
+                {% render_field form.dispatch_note.passports class="form-control" placeholder="type id" %}
+                <div class="invalid-feedback">{{ form.dispatch_note.passports.errors|first }}</div>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.dispatch_note.certificate_id.id_for_label }}">Certificate Id</label>
+                {% render_field form.dispatch_note.certificate_id class="form-control" %}
+                <div class="invalid-feedback">{{ form.dispatch_note.certificate_id.errors|first }}</div>
+            </div>
+            <div class="form-group">
+                <label for="{{ form.dispatch_note.certificate_number.id_for_label }}">Certificate Number</label>
+                {% render_field form.dispatch_note.certificate_number class="form-control" %}
+                <div class="invalid-feedback">{{ form.dispatch_note.certificate_number.errors|first }}</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button"
+                class="btn btn-secondary"
+                data-bs-dismiss="modal">
+            Cancel
+        </button>
+        <button type="submit"
+                class="btn btn-primary">
+            Save
+        </button>
+    </div>
+</form>
+{% endwith %}
+
+{% block javascript %}
+    <script src="{% static 'js/hide.js' %}"></script>
+    <script src="{% static 'js/calc.js' %}"></script>
+    <script src="{% static 'js/select_data.js' %}"></script>
+{% endblock %}

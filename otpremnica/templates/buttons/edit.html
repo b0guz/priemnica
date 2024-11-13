@@ -1,0 +1,5 @@
+{% load static %}
+
+<button class="btn btn-warning btn-edit btn-text" hx-get="{% url url_link element %}" hx-target="#dialog">
+    <img src="{% static 'images/icons/edit.svg' %}" alt="Edit">
+</button>

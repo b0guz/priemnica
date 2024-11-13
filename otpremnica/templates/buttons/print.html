@@ -1,0 +1,5 @@
+{% load static %}
+
+<a href="{% url 'print_pdf' pk=elem.pk %}" target="_blank" class="btn btn-primary btn-print btn-text">
+    <img src="{% static 'images/icons/print.svg' %}" alt="new" class="svg-image">
+</a>

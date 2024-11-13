@@ -1,0 +1,6 @@
+{% load static %}
+
+<button hx-get="{% url url_link %}" hx-target="#dialog" class="btn btn-success btn-add btn-text">
+    <img src="{% static 'images/icons/new.svg' %}" alt="new" class="svg-image">
+    Add {{ btn_text }}
+</button>

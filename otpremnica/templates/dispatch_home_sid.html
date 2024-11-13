@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dispatch Notes{% endblock %}
+
+{% block content %}
+      <div class="my-4 text-center">
+        <h1>Srem Sid Dispatch Notes</h1>
+      </div>
+        <div class="mb-2 row">
+            <div class="col-auto">
+            {% include 'buttons/add.html' with url_link='add_dispatch_note_sid' btn_text='note S' %}
+            </div>
+            <div class="col-auto">
+            <form class="form" id="form"
+                  hx-trigger="submit, input delay:0.5s"
+                  hx-get="{% url 'list_search_view_sid' %}"
+                  hx-target="#display-table"
+                  hx-swap="innerHTML"
+            >
+                <input id="search-box" type="text" name="search" placeholder="Search..." value="{{ search }}">
+            </form>
+            </div>
+        </div>
+      <table class="table table-striped text-center">
+        <thead>
+        <tr>
+          <th>Doc Number</th>
+          <th>Doc Date</th>
+          <th>Supplier</th>
+          <th>Meat type</th>
+          <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody id="display-table" class="table-group-divider" hx-trigger="load, dispatchNoteListChanged from:body" hx-get="{% url 'list_search_view_sid' %}" hx-target="this">
+        <tr>
+          <td class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+{% endblock %}
+
+{% block modal %}
+    <div id="modal" class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div id="dialog" class="modal-dialog" hx-target="this"></div>
+    </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div id="toast" class="toast align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div id="toast-body" class="toast-body"></div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+    <script src="{% static 'js/dialog.js' %}"></script>
+    <script src="{% static 'js/toast_message.js' %}"></script>
+{% endblock %}

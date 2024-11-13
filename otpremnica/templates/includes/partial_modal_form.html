@@ -1,0 +1,17 @@
+{% load widget_tweaks %}
+
+{% for field in form %}
+
+<div class="mb-3">
+    <label for="{{ field.id_for_label }}" class="form-label"><strong>{{ field.label }}</strong></label>
+    {% with WIDGET_ERROR_CLASS='is-invalid' %}
+        {% if field.field.widget.input_type == 'select' %}
+            {% render_field field class="form-select" %}
+        {% else %}
+            {% render_field field class="form-control" %}
+        {% endif %}
+    {% endwith %}
+    <div class="invalid-feedback">{{ field.errors|first }}</div>
+</div>
+
+{% endfor %}

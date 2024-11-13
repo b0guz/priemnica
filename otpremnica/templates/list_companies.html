@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header card-header-secondary text-center">
+        <h1>Companies</h1>
+    </div>
+
+    <div class="card-body">
+        {% include 'buttons/add.html' with url_link='new_company' btn_text='company' %}
+        <table class="table text-center mb-0">
+
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>ID</th>
+                <th>Address</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+
+            <tbody id="display-table" hx-trigger="load, elementListChanged from:body" hx-get="{% url 'table_company' %}" hx-target="this">
+            <tr>
+                <td class="spinner-border" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </td>
+            </tr>
+            </tbody>
+
+        </table>
+    </div>
+</div>
+{% endblock content %}
+
+{% block modal %}
+    {% include 'includes/partial_modal_toast.html' %}
+{% endblock modal %}
+
+{% block javascript %}
+    <script src="{% static 'js/htmx_modal.js' %}"></script>
+    <script src="{% static 'js/toast_message.js' %}"></script>
+{% endblock javascript %}

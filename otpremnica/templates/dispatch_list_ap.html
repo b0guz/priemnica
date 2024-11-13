@@ -1,0 +1,24 @@
+{% for elem in page_obj %}
+
+    <tr id="elem-{{ elem.pk }}" class="dispatch-note-row">
+        <td>{{ elem.doc_number }}</td>
+        <td>{{ elem.doc_date|date:'d.m.Y' }}</td>
+        <td>{{ elem.supplier }}</td>
+        <td>{{ elem.meat_type }}</td>
+        <td>
+            {% include 'buttons/print.html' with url_link='print_pdf' element=elem.pk %}
+            {% include 'buttons/edit.html' with url_link='edit_dispatch_note_ap' element=elem.pk %}
+        </td>
+    </tr>
+
+{% empty %}
+    <tr>
+        <td colspan="5" class="text-center bg-warning"><strong>No data</strong></td>
+    </tr>
+{% endfor %}
+
+<tr>
+    <td colspan="5" class="paginator">
+        {% include 'includes/pagination_notes.html' %}
+    </td>
+</tr>

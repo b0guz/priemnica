@@ -1,0 +1,20 @@
+{% load static %}
+
+{% for element in page_obj %}
+<tr id="element-{{ element.pk }}" class="element-row align-middle">
+    <td>{{ element.name }}</td>
+    <td>
+        {% include 'buttons/edit.html' with url_link='update_meat' element=element.pk %}
+        {% include 'buttons/delete.html' with url_link='delete_meat' element=element.pk %}
+    </td>
+</tr>
+{% empty %}
+    <tr>
+        <td colspan="2" class="text-center bg-warning">No data</td>
+    </tr>
+{% endfor %}
+<tr>
+    <td colspan="2" class="paginator">
+        {% include 'includes/pagination.html' %}
+    </td>
+</tr>
